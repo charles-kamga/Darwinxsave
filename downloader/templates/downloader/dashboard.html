@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DarwinxSaver - Mon Dashboard</title>
+    <style>
+        :root {
+            --main-blue: #2563eb;
+            --main-red: #ef4444;
+            --main-violet: #8b5cf6;
+            --bg-dark: #0f172a;
+            --card-bg: #1e293b;
+            --border-radius: 20px;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-dark);
+            margin: 0; color: #fff;
+            background-image: radial-gradient(circle at top right, rgba(139, 92, 246, 0.1), transparent);
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(20px);
+            height: 70px; display: flex; align-items: center; justify-content: center;
+            border-bottom: 1px solid rgba(255,255,255,0.05); position: sticky; top: 0; z-index: 100;
+        }
+
+        .nav-content { width: 1200px; display: flex; justify-content: space-between; padding: 0 20px; align-items: center; box-sizing: border-box; }
+        .nav-content .logo { font-size: 22px; font-weight: 800; text-decoration: none; background: linear-gradient(to right, var(--main-blue), var(--main-violet)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .nav-content .user-info { font-size: 14px; color: #94a3b8; }
+        .nav-content .logout-link { margin-left: 20px; text-decoration: none; color: var(--main-red); font-weight: 600; font-size: 14px; }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; box-sizing: border-box; }
+
+        .welcome-header { margin-bottom: 50px; }
+        .welcome-header h1 { 
+            font-size: clamp(32px, 5vw, 56px); letter-spacing: -2px; margin: 0;
+            background: linear-gradient(to right, #fff, #94a3b8); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .welcome-header p { font-size: 18px; color: #94a3b8; margin-top: 10px; }
+
+        .quick-download {
+            background: rgba(255,255,255,0.02); padding: 30px; border-radius: var(--border-radius);
+            margin-bottom: 60px; border: 1px solid rgba(255,255,255,0.05);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        #dashUrlInput {
+            width: 100%; padding: 18px; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1);
+            color: #fff; border-radius: 15px; font-size: 16px; outline: none; transition: border-color 0.3s;
+            box-sizing: border-box;
+        }
+        #dashUrlInput:focus { border-color: var(--main-blue); }
+
+        .form-row { display: flex; gap: 15px; flex-wrap: wrap; margin-top: 15px; }
+        .form-row select { flex: 1; min-width: 150px; background: #1e293b; color: #fff; border: 1px solid rgba(255,255,255,0.1); padding: 12px; border-radius: 12px; outline: none; }
+
+        .btn-primary {
+            background: linear-gradient(to right, var(--main-blue), var(--main-violet));
+            color: white; padding: 15px 40px; border-radius: 15px;
+            border: none; font-weight: 700; cursor: pointer; transition: all 0.3s;
+            box-shadow: 0 10px 20px rgba(37, 99, 235, 0.2);
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 15px 30px rgba(139, 92, 246, 0.3); }
+
+        .history-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .video-card {
+            background: var(--card-bg); border-radius: var(--border-radius);
+            overflow: hidden; border: 1px solid rgba(255,255,255,0.05);
+            transition: all 0.3s ease;
+        }
+        .video-card:hover { transform: translateY(-5px); border-color: var(--main-blue); }
+
+        .thumbnail-container { width: 100%; height: 160px; background: #000; overflow: hidden; }
+        .thumbnail-container img { width: 100%; height: 100%; object-fit: cover; }
+
+        .card-body { padding: 20px; }
+        .card-body h3 { font-size: 15px; margin: 0 0 15px 0; line-height: 1.4; height: 42px; overflow: hidden; }
+        
+        .actions { display: flex; gap: 10px; }
+        .btn-small {
+            flex: 1; padding: 10px; border-radius: 10px; border: none; font-size: 12px; font-weight: 700; cursor: pointer;
+            text-align: center; transition: background 0.2s;
+        }
+        .btn-video { background: var(--main-blue); color: white; }
+        .btn-audio { background: rgba(255,255,255,0.05); color: #fff; border: 1px solid rgba(255,255,255,0.1); }
+        .btn-audio:hover { background: rgba(255,255,255,0.1); }
+
+        .empty-state { text-align: center; padding: 80px 0; color: #475569; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-content">
+            <a href="{% url 'index' %}" class="logo">DarwinxSaver</a>
+            <div class="user-info">
+                <span>Membre : <strong>{{ user.username }}</strong></span>
+                <a href="{% url 'logout' %}" class="logout-link">Déconnexion</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="welcome-header">
+            <h1>Bienvenue, {{ user.username }}.</h1>
+            <p>Gérez vos contenus et téléchargez sans limites.</p>
+        </div>
+
+        <div class="quick-download">
+            <form id="dashForm" method="POST" action="{% url 'download' %}" style="display: flex; flex-direction: column; gap: 15px;">
+                {% csrf_token %}
+                <input type="url" name="url" id="dashUrlInput" placeholder="Coller une URL YouTube..." required>
+                
+                <div id="dashVideoPreview" style="display: none; background: rgba(0,0,0,0.3); padding: 15px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.05); animation: fadeIn 0.4s;">
+                    <div style="display: flex; gap: 15px; align-items: center;">
+                        <img id="dashPreviewThumb" src="" style="width: 120px; border-radius: 8px;">
+                        <div>
+                            <h4 id="dashPreviewTitle" style="margin: 0; font-size: 14px;"></h4>
+                            <p id="dashPreviewMeta" style="margin: 5px 0 0 0; font-size: 12px; color: #94a3b8;"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <select name="format">
+                        <option value="mp4">Format Vidéo (MP4)</option>
+                        <option value="mp3">Format Audio (MP3)</option>
+                    </select>
+                    <select name="quality">
+                        <option value="native">Qualité Native</option>
+                        <option value="hd" selected>Qualité HD (1080p)</option>
+                        <option value="eco">Économique (480p)</option>
+                    </select>
+                    <select name="encoding">
+                        <option value="iphone" selected>Encodage iPhone</option>
+                        <option value="classic">Encodage Classique</option>
+                    </select>
+                    <button type="submit" class="btn-primary" id="dashBtn">Télécharger</button>
+                </div>
+            </form>
+        </div>
+
+        <h2 style="font-size: 22px; margin-bottom: 25px; font-weight: 700;">Vidéos récentes</h2>
+
+        {% if downloads %}
+        <div class="history-grid">
+            {% for item in downloads %}
+            <div class="video-card">
+                <div class="thumbnail-container">
+                    <img src="{{ item.thumbnail_url }}" alt="{{ item.title }}">
+                </div>
+                <div class="card-body">
+                    <h3>{{ item.title }}</h3>
+                    <div class="actions">
+                        <form method="POST" action="{% url 'download' %}" style="width: 100%; display: flex; gap: 10px;">
+                            {% csrf_token %}
+                            <input type="hidden" name="url" value="{{ item.video_url }}">
+                            <button type="submit" name="format" value="mp4" class="btn-small btn-video">Vidéo</button>
+                            <button type="submit" name="format" value="mp3" class="btn-small btn-audio">MP3</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <p>Aucun téléchargement récent. Commencez par coller un lien ci-dessus !</p>
+        </div>
+        {% endif %}
+    </div>
+
+    <script>
+        const dashUrlInput = document.getElementById('dashUrlInput');
+        const dashPreviewBlock = document.getElementById('dashVideoPreview');
+        let dashPreviewTimeout = null;
+
+        dashUrlInput.addEventListener('input', function() {
+            clearTimeout(dashPreviewTimeout);
+            const url = this.value;
+            if (url.includes('youtube.com/') || url.includes('youtu.be/')) {
+                dashPreviewTimeout = setTimeout(() => {
+                    fetch(`/preview/?url=${encodeURIComponent(url)}`)
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.thumbnail) {
+                                document.getElementById('dashPreviewThumb').src = data.thumbnail;
+                                document.getElementById('dashPreviewTitle').innerText = data.title;
+                                document.getElementById('dashPreviewMeta').innerText = `${data.duration} • ${data.view_count.toLocaleString()} vues`;
+                                dashPreviewBlock.style.display = 'block';
+                            }
+                        })
+                        .catch(err => console.log('Erreur dashboard preview:', err));
+                }, 800);
+            } else {
+                dashPreviewBlock.style.display = 'none';
+            }
+        });
+
+        document.getElementById('dashForm').onsubmit = function() {
+            document.getElementById('dashBtn').innerText = 'Patientez...';
+            document.getElementById('dashBtn').disabled = true;
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DarwinxSaver - L'excellence du téléchargement</title>
+    <style>
+        :root {
+            --main-blue: #2563eb;
+            --main-red: #ef4444;
+            --main-violet: #8b5cf6;
+            --bg-dark: #0f172a;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --border-radius: 24px;
+        }
+
+        body {
+            font-family: 'SF Pro Display', -apple-system, sans-serif;
+            margin: 0; color: #fff; background: var(--bg-dark);
+            background-image: radial-gradient(circle at 10% 20%, rgba(37, 99, 235, 0.1) 0%, transparent 40%),
+                              radial-gradient(circle at 90% 80%, rgba(139, 92, 246, 0.1) 0%, transparent 40%);
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        .navbar {
+            position: fixed; top: 0; width: 100%; height: 70px;
+            background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(20px);
+            z-index: 1000; display: flex; justify-content: center; align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .nav-content { width: 1100px; display: flex; justify-content: space-between; padding: 0 20px; align-items: center; box-sizing: border-box; }
+        .nav-content h1 { font-size: 24px; font-weight: 800; background: linear-gradient(to right, var(--main-blue), var(--main-violet), var(--main-red)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0; }
+        .nav-links a { margin-left: 25px; text-decoration: none; color: #94a3b8; font-size: 14px; transition: color 0.3s; font-weight: 500; }
+        .nav-links a:hover { color: #fff; }
+        .nav-links .signup-btn { color: var(--main-blue); font-weight: 700; border: 1px solid rgba(37, 99, 235, 0.3); padding: 8px 16px; border-radius: 12px; }
+
+        .section { padding: 120px 20px; max-width: 1100px; margin: 0 auto; text-align: center; box-sizing: border-box; }
+        .hero h2 { font-size: clamp(40px, 8vw, 84px); letter-spacing: -3px; font-weight: 900; margin-bottom: 20px; line-height: 1; }
+        .hero p { font-size: clamp(18px, 4vw, 24px); color: #94a3b8; max-width: 700px; margin: 0 auto 60px; }
+
+        .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 80px; text-align: left; }
+        .feature-card { 
+            background: var(--glass-bg); padding: 40px; border-radius: var(--border-radius); 
+            border: 1px solid rgba(255,255,255,0.05); transition: all 0.4s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .feature-card:hover { border-color: var(--main-violet); transform: translateY(-5px); box-shadow: 0 15px 40px rgba(139, 92, 246, 0.1); }
+        .feature-card h3 { font-size: 28px; margin-bottom: 15px; color: #fff; }
+        .feature-card p { color: #94a3b8; line-height: 1.6; }
+        .feature-card img { width: 100%; border-radius: 12px; margin-bottom: 20px; }
+
+        .download-zone { 
+            background: linear-gradient(180deg, var(--bg-dark) 0%, #1e1b4b 100%); 
+            padding: 100px 20px; position: relative;
+        }
+        .glass-card { 
+            background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(40px);
+            padding: 40px; border-radius: var(--border-radius); max-width: 700px; margin: 0 auto;
+            border: 1px solid rgba(255,255,255,0.05);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+        
+        input[type="url"] {
+            width: 100%; padding: 20px; border: 1px solid rgba(255,255,255,0.1); 
+            border-radius: 18px; margin-bottom: 20px; background: rgba(0,0,0,0.2);
+            font-size: 16px; color: #fff; outline: none; transition: all 0.3s; box-sizing: border-box;
+        }
+        input[type="url"]:focus { border-color: var(--main-blue); box-shadow: 0 0 20px rgba(37, 99, 235, 0.2); }
+
+        .btn-apple {
+            background: linear-gradient(to right, var(--main-blue), var(--main-violet)); 
+            color: white; padding: 18px 45px; border-radius: 40px; border: none; 
+            font-size: 18px; font-weight: 700; cursor: pointer; transition: all 0.3s;
+            box-shadow: 0 10px 20px rgba(37, 99, 235, 0.3); display: inline-block;
+        }
+        .btn-apple:hover { transform: scale(1.02); box-shadow: 0 15px 30px rgba(139, 92, 246, 0.4); }
+
+        .premium-badge {
+            background: rgba(37, 99, 235, 0.05); border: 1px solid rgba(37, 99, 235, 0.1);
+            padding: 20px; border-radius: 18px; margin-bottom: 25px; text-align: left;
+        }
+
+        .reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-content">
+            <h1>DarwinxSaver</h1>
+            <div class="nav-links">
+                {% if user.is_authenticated %}
+                    <a href="{% url 'dashboard' %}">Dashboard</a>
+                    <a href="{% url 'logout' %}">Déconnexion</a>
+                {% else %}
+                    <a href="{% url 'login' %}">Connexion</a>
+                    <a href="{% url 'signup' %}" class="signup-btn">S'inscrire</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <section class="section hero">
+            <h2 class="reveal">DarwinxSaver.</h2>
+            <p class="reveal">L'élégance du téléchargement. Optimisé pour votre iPhone, conçu pour la vitesse.</p>
+            
+            <div class="feature-grid">
+                <div class="feature-card reveal">
+                    <img src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?auto=format&fit=crop&q=80&w=600" alt="Qualité">
+                    <h3>Qualité Sans Compromis</h3>
+                    <p>DarwinxSaver extrait le meilleur flux disponible pour vous offrir une expérience visuelle identique à l'originale.</p>
+                </div>
+                <div class="feature-card reveal" style="transition-delay: 0.2s;">
+                    <img src="https://images.unsplash.com/photo-1512428559087-560fa5ceab42?auto=format&fit=crop&q=80&w=600" alt="Mobile">
+                    <h3>Optimisé pour iOS</h3>
+                    <p>Fini les fichiers illisibles. Nos algorithmes forcent l'encodage H.264/AAC natif pour une lecture parfaite dans votre galerie Photos.</p>
+                </div>
+                <div class="feature-card reveal" style="grid-column: 1 / -1; background: linear-gradient(135deg, rgba(37, 99, 235, 0.1), rgba(139, 92, 246, 0.1)); border-color: var(--main-violet);">
+                    <div style="display: flex; align-items: center; gap: 40px; padding: 10px; flex-wrap: wrap;">
+                        <div style="flex: 1; min-width: 300px;">
+                            <h3 style="margin-top: 0;">Fonctionnalités Membres</h3>
+                            <p>Débloquez le téléchargement de playlists, le format MP3 haute fidélité et le choix de la résolution jusqu'à 4K.</p>
+                        </div>
+                        <div style="text-align: center;">
+                            <a href="{% url 'signup' %}" class="btn-apple">S'inscrire Gratuitement</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="download-section" class="download-zone">
+            <div class="section" style="padding: 0;">
+                <h2 style="margin-bottom: 60px;">Prêt à essayer ?</h2>
+                
+                <div style="display: flex; gap: 40px; align-items: flex-start; text-align: left; flex-wrap: wrap; justify-content: center;">
+                    <div style="flex: 2; min-width: 300px; max-width: 600px;">
+                        {% if limit_reached %}
+                        <div class="glass-card" style="border-color: var(--main-red);">
+                            <h3 style="color: var(--main-red);">Limite atteinte.</h3>
+                            <p>Vous avez utilisé vos 3 essais gratuits. Rejoignez la communauté pour continuer.</p>
+                            <a href="{% url 'signup' %}" class="btn-apple" style="text-decoration: none; background: var(--main-red);">Créer un compte gratuit</a>
+                        </div>
+                        {% else %}
+                        <div class="glass-card">
+                            <form id="downloadForm" method="POST" action="{% url 'download' %}">
+                                {% csrf_token %}
+                                <input type="url" name="url" id="urlInput" placeholder="Lien de la vidéo YouTube..." required>
+                                
+                                <div id="videoPreview" style="display: none; margin-bottom: 25px; background: rgba(0,0,0,0.3); padding: 20px; border-radius: 18px; border: 1px solid rgba(255,255,255,0.05);">
+                                    <img id="previewThumb" src="" style="width: 100%; border-radius: 12px; margin-bottom: 15px;">
+                                    <h4 id="previewTitle" style="margin: 0; font-size: 16px; color: #fff;"></h4>
+                                    <p id="previewMeta" style="margin: 8px 0 0 0; font-size: 13px; color: #94a3b8;"></p>
+                                </div>
+
+                                <div class="premium-badge">
+                                    <p style="margin: 0; font-size: 14px; color: var(--main-blue); font-weight: 700;">✨ OPTIONS PREMIUM (VERROUILLÉES)</p>
+                                    <p style="margin: 8px 0 0 0; font-size: 13px; color: #94a3b8; line-height: 1.4;">
+                                        Mode iPhone & HD activés. <a href="{% url 'signup' %}" style="color: #fff; text-decoration: underline;">S'inscrire pour changer &rarr;</a>
+                                    </p>
+                                </div>
+                                
+                                <button type="submit" class="btn-apple" id="submitBtn" style="width: 100%;">Télécharger Maintenant</button>
+                            </form>
+                            <div id="status" style="margin-top: 20px; font-size: 14px; opacity: 0.7; display: none; text-align: center;">Optimisation du flux en cours...</div>
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <div style="flex: 1; min-width: 250px; background: rgba(255, 255, 255, 0.03); padding: 30px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05);">
+                        <h3 style="margin-top: 0; font-size: 20px;">🎁 Playlists ?</h3>
+                        <p style="font-size: 15px; color: #94a3b8; line-height: 1.6; margin-bottom: 25px;">
+                            Le téléchargement de playlists complètes est réservé à nos membres. 
+                        </p>
+                        <a href="{% url 'signup' %}" style="color: var(--main-violet); text-decoration: none; font-weight: 700;">Devenir membre &rarr;</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer style="padding: 60px 20px; text-align: center; color: #475569; font-size: 13px;">
+        &copy; 2026 DarwinxSaver. All rights reserved. <br> Powered by Python & Django.
+    </footer>
+
+    <script>
+        // Preview logic
+        const urlInput = document.getElementById('urlInput');
+        const previewBlock = document.getElementById('videoPreview');
+        let previewTimeout = null;
+
+        urlInput.addEventListener('input', function() {
+            clearTimeout(previewTimeout);
+            const url = this.value;
+            
+            if (url.includes('youtube.com/') || url.includes('youtu.be/')) {
+                previewTimeout = setTimeout(() => {
+                    fetch(`/preview/?url=${encodeURIComponent(url)}`)
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.thumbnail) {
+                                document.getElementById('previewThumb').src = data.thumbnail;
+                                document.getElementById('previewTitle').innerText = data.title;
+                                document.getElementById('previewMeta').innerText = `${data.duration} • ${data.view_count.toLocaleString()} vues`;
+                                previewBlock.style.display = 'block';
+                            }
+                        })
+                        .catch(err => console.log('Erreur preview:', err));
+                }, 800);
+            } else {
+                previewBlock.style.display = 'none';
+            }
+        });
+
+        // Reveal Animations on Scroll
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal");
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                var elementVisible = 100;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add("active");
+                }
+            }
+        }
+        window.addEventListener("scroll", reveal);
+        window.addEventListener("load", reveal);
+
+        document.getElementById('downloadForm').onsubmit = function() {
+            document.getElementById('status').style.display = 'block';
+            document.getElementById('submitBtn').disabled = true;
+            document.getElementById('submitBtn').style.opacity = '0.5';
+        };
+    </script>
+</body>
+</html>
