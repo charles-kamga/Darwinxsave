@@ -17,39 +17,54 @@
         body {
             font-family: 'SF Pro Display', -apple-system, sans-serif;
             margin: 0; color: #fff; background: var(--bg-dark);
-            background-image: radial-gradient(circle at 10% 20%, rgba(37, 99, 235, 0.1) 0%, transparent 40%),
-                              radial-gradient(circle at 90% 80%, rgba(139, 92, 246, 0.1) 0%, transparent 40%);
             scroll-behavior: smooth;
             overflow-x: hidden;
         }
 
+        /* Hero with Real Image Background */
+        .hero-section {
+            height: 100vh;
+            background: linear-gradient(rgba(15, 23, 42, 0.8), rgba(15, 23, 42, 0.9)), url('/static/downloader/images/hero_bg.jpg');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 20px;
+        }
+
         .navbar {
             position: fixed; top: 0; width: 100%; height: 70px;
-            background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(20px);
+            background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(20px);
             z-index: 1000; display: flex; justify-content: center; align-items: center;
             border-bottom: 1px solid rgba(255,255,255,0.05);
         }
 
         .nav-content { width: 1100px; display: flex; justify-content: space-between; padding: 0 20px; align-items: center; box-sizing: border-box; }
-        .nav-content h1 { font-size: 24px; font-weight: 800; background: linear-gradient(to right, var(--main-blue), var(--main-violet), var(--main-red)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0; }
+        .nav-content h1 { font-size: 24px; font-weight: 800; background: linear-gradient(to right, var(--main-blue), var(--main-violet), var(--main-red)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; margin: 0; }
         .nav-links a { margin-left: 25px; text-decoration: none; color: #94a3b8; font-size: 14px; transition: color 0.3s; font-weight: 500; }
         .nav-links a:hover { color: #fff; }
         .nav-links .signup-btn { color: var(--main-blue); font-weight: 700; border: 1px solid rgba(37, 99, 235, 0.3); padding: 8px 16px; border-radius: 12px; }
 
-        .section { padding: 120px 20px; max-width: 1100px; margin: 0 auto; text-align: center; box-sizing: border-box; }
         .hero h2 { font-size: clamp(40px, 8vw, 84px); letter-spacing: -3px; font-weight: 900; margin-bottom: 20px; line-height: 1; }
         .hero p { font-size: clamp(18px, 4vw, 24px); color: #94a3b8; max-width: 700px; margin: 0 auto 60px; }
 
+        .section { padding: 120px 20px; max-width: 1100px; margin: 0 auto; text-align: center; box-sizing: border-box; }
+        
         .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 80px; text-align: left; }
         .feature-card { 
             background: var(--glass-bg); padding: 40px; border-radius: var(--border-radius); 
             border: 1px solid rgba(255,255,255,0.05); transition: all 0.4s ease;
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            overflow: hidden; backdrop-filter: blur(10px);
         }
-        .feature-card:hover { border-color: var(--main-violet); transform: translateY(-5px); box-shadow: 0 15px 40px rgba(139, 92, 246, 0.1); }
-        .feature-card h3 { font-size: 28px; margin-bottom: 15px; color: #fff; }
-        .feature-card p { color: #94a3b8; line-height: 1.6; }
-        .feature-card img { width: 100%; border-radius: 12px; margin-bottom: 20px; }
+        .feature-card:hover { border-color: rgba(139, 92, 246, 0.4); transform: translateY(-10px); box-shadow: 0 20px 40px rgba(139, 92, 246, 0.15); }
+        .feature-card img { 
+            width: 100%; height: 200px; object-fit: cover; border-radius: 15px; margin-bottom: 25px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
 
         .download-zone { 
             background: linear-gradient(180deg, var(--bg-dark) 0%, #1e1b4b 100%); 
@@ -58,9 +73,11 @@
         .glass-card { 
             background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(40px);
             padding: 40px; border-radius: var(--border-radius); max-width: 700px; margin: 0 auto;
-            border: 1px solid rgba(255,255,255,0.05);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255,255,255,0.08);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255,255,255,0.1);
+            transition: transform 0.3s;
         }
+        .glass-card:hover { transform: translateY(-2px); }
         
         input[type="url"] {
             width: 100%; padding: 20px; border: 1px solid rgba(255,255,255,0.1); 
@@ -72,10 +89,17 @@
         .btn-apple {
             background: linear-gradient(to right, var(--main-blue), var(--main-violet)); 
             color: white; padding: 18px 45px; border-radius: 40px; border: none; 
-            font-size: 18px; font-weight: 700; cursor: pointer; transition: all 0.3s;
-            box-shadow: 0 10px 20px rgba(37, 99, 235, 0.3); display: inline-block;
+            font-size: 18px; font-weight: 700; cursor: pointer; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.3); display: inline-block;
+            position: relative; overflow: hidden;
         }
-        .btn-apple:hover { transform: scale(1.02); box-shadow: 0 15px 30px rgba(139, 92, 246, 0.4); }
+        .btn-apple::before {
+            content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.3), transparent);
+            transform: skewX(-20deg); transition: 0.5s;
+        }
+        .btn-apple:hover::before { left: 150%; }
+        .btn-apple:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 20px 40px rgba(139, 92, 246, 0.5); }
 
         .premium-badge {
             background: rgba(37, 99, 235, 0.05); border: 1px solid rgba(37, 99, 235, 0.1);
@@ -105,18 +129,21 @@
     </nav>
 
     <main>
-        <section class="section hero">
+        <section class="hero-section hero">
             <h2 class="reveal">DarwinxSaver.</h2>
             <p class="reveal">L'élégance du téléchargement. Optimisé pour votre iPhone, conçu pour la vitesse.</p>
-            
+            <a href="#download-section" class="btn-apple reveal" style="text-decoration: none;">Essayer maintenant</a>
+        </section>
+
+        <section class="section">
             <div class="feature-grid">
                 <div class="feature-card reveal">
-                    <img src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?auto=format&fit=crop&q=80&w=600" alt="Qualité">
+                    <img src="/static/downloader/images/feat1.jpg" alt="Qualité">
                     <h3>Qualité Sans Compromis</h3>
                     <p>DarwinxSaver extrait le meilleur flux disponible pour vous offrir une expérience visuelle identique à l'originale.</p>
                 </div>
                 <div class="feature-card reveal" style="transition-delay: 0.2s;">
-                    <img src="https://images.unsplash.com/photo-1512428559087-560fa5ceab42?auto=format&fit=crop&q=80&w=600" alt="Mobile">
+                    <img src="/static/downloader/images/feat2.jpg" alt="Mobile">
                     <h3>Optimisé pour iOS</h3>
                     <p>Fini les fichiers illisibles. Nos algorithmes forcent l'encodage H.264/AAC natif pour une lecture parfaite dans votre galerie Photos.</p>
                 </div>

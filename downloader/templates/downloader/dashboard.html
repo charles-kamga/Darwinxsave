@@ -29,24 +29,39 @@
         }
 
         .nav-content { width: 1200px; display: flex; justify-content: space-between; padding: 0 20px; align-items: center; box-sizing: border-box; }
-        .nav-content .logo { font-size: 22px; font-weight: 800; text-decoration: none; background: linear-gradient(to right, var(--main-blue), var(--main-violet)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .nav-content .logo { font-size: 22px; font-weight: 800; text-decoration: none; background: linear-gradient(to right, var(--main-blue), var(--main-violet)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
         .nav-content .user-info { font-size: 14px; color: #94a3b8; }
         .nav-content .logout-link { margin-left: 20px; text-decoration: none; color: var(--main-red); font-weight: 600; font-size: 14px; }
 
         .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; box-sizing: border-box; }
 
-        .welcome-header { margin-bottom: 50px; }
+        /* Dashboard Banner */
+        .dash-banner {
+            height: 300px;
+            background: linear-gradient(to bottom, rgba(15, 23, 42, 0.4), var(--bg-dark)), url('/static/downloader/images/abstract.jpg');
+            background-size: cover;
+            background-position: center;
+            border-radius: var(--border-radius);
+            margin-bottom: -100px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .welcome-header { position: relative; z-index: 2; padding: 0 40px; }
         .welcome-header h1 { 
             font-size: clamp(32px, 5vw, 56px); letter-spacing: -2px; margin: 0;
-            background: linear-gradient(to right, #fff, #94a3b8); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background: linear-gradient(to right, #fff, #94a3b8); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
         }
         .welcome-header p { font-size: 18px; color: #94a3b8; margin-top: 10px; }
 
         .quick-download {
-            background: rgba(255,255,255,0.02); padding: 30px; border-radius: var(--border-radius);
-            margin-bottom: 60px; border: 1px solid rgba(255,255,255,0.05);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            position: relative; z-index: 3;
+            background: rgba(30, 41, 59, 0.6); backdrop-filter: blur(30px); 
+            padding: 30px; border-radius: var(--border-radius);
+            margin-bottom: 60px; border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1);
+            transition: transform 0.3s;
         }
+        .quick-download:hover { transform: translateY(-2px); }
 
         #dashUrlInput {
             width: 100%; padding: 18px; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1);
@@ -61,10 +76,16 @@
         .btn-primary {
             background: linear-gradient(to right, var(--main-blue), var(--main-violet));
             color: white; padding: 15px 40px; border-radius: 15px;
-            border: none; font-weight: 700; cursor: pointer; transition: all 0.3s;
-            box-shadow: 0 10px 20px rgba(37, 99, 235, 0.2);
+            border: none; font-weight: 700; cursor: pointer; transition: all 0.4s;
+            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.3); position: relative; overflow: hidden;
         }
-        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 15px 30px rgba(139, 92, 246, 0.3); }
+        .btn-primary::before {
+            content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.3), transparent);
+            transform: skewX(-20deg); transition: 0.5s;
+        }
+        .btn-primary:hover::before { left: 150%; }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(139, 92, 246, 0.5); }
 
         .history-grid {
             display: grid;
@@ -73,11 +94,11 @@
         }
 
         .video-card {
-            background: var(--card-bg); border-radius: var(--border-radius);
-            overflow: hidden; border: 1px solid rgba(255,255,255,0.05);
-            transition: all 0.3s ease;
+            background: rgba(30, 41, 59, 0.5); backdrop-filter: blur(10px); border-radius: var(--border-radius);
+            overflow: hidden; border: 1px solid rgba(255,255,255,0.08);
+            transition: all 0.4s ease; box-shadow: 0 10px 20px rgba(0,0,0,0.2);
         }
-        .video-card:hover { transform: translateY(-5px); border-color: var(--main-blue); }
+        .video-card:hover { transform: translateY(-8px); border-color: rgba(37, 99, 235, 0.4); box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
 
         .thumbnail-container { width: 100%; height: 160px; background: #000; overflow: hidden; }
         .thumbnail-container img { width: 100%; height: 100%; object-fit: cover; }
@@ -111,6 +132,7 @@
     </nav>
 
     <div class="container">
+        <div class="dash-banner"></div>
         <div class="welcome-header">
             <h1>Bienvenue, {{ user.username }}.</h1>
             <p>Gérez vos contenus et téléchargez sans limites.</p>

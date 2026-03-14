@@ -5,12 +5,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DarwinxSaver - Connexion</title>
     <style>
-        body { font-family: -apple-system, sans-serif; background: #f5f5f7; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; }
-        .card { background: white; padding: 40px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); width: 100%; max-width: 350px; text-align: center; }
-        h2 { font-size: 28px; margin-bottom: 20px; }
-        input { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 10px; box-sizing: border-box; }
-        .btn { width: 100%; background: #000; color: white; padding: 12px; border: none; border-radius: 20px; font-weight: 600; cursor: pointer; }
-        .help { font-size: 12px; color: #86868b; margin-top: 20px; }
+        :root {
+            --main-blue: #2563eb;
+            --main-violet: #8b5cf6;
+            --bg-dark: #0f172a;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --border-radius: 24px;
+        }
+        body { 
+            font-family: 'SF Pro Display', -apple-system, sans-serif; 
+            background: var(--bg-dark); color: #fff;
+            display: flex; align-items: center; justify-content: center; 
+            height: 100vh; margin: 0; 
+            background-image: radial-gradient(circle at center, rgba(37, 99, 235, 0.1), transparent 50%);
+        }
+        .card { 
+            background: var(--glass-bg); padding: 40px; border-radius: var(--border-radius); 
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); 
+            border: 1px solid rgba(255,255,255,0.05);
+            backdrop-filter: blur(20px);
+            width: 100%; max-width: 380px; text-align: center; box-sizing: border-box;
+        }
+        h2 { font-size: 28px; margin-bottom: 25px; font-weight: 800; letter-spacing: -1px; }
+        input { 
+            width: 100%; padding: 15px; margin-bottom: 15px; 
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; box-sizing: border-box; 
+            background: rgba(0,0,0,0.2); color: #fff; font-size: 16px; outline: none; transition: all 0.3s;
+        }
+        input:focus { border-color: var(--main-blue); box-shadow: 0 0 15px rgba(37, 99, 235, 0.2); }
+        .btn { 
+            width: 100%; background: linear-gradient(to right, var(--main-blue), var(--main-violet)); 
+            color: white; padding: 15px; border: none; border-radius: 15px; font-weight: 700; font-size: 16px;
+            cursor: pointer; transition: all 0.3s; margin-top: 10px;
+            box-shadow: 0 10px 20px rgba(37, 99, 235, 0.2);
+        }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 15px 30px rgba(139, 92, 246, 0.4); }
+        .help { font-size: 14px; color: #94a3b8; margin-top: 25px; }
+        .help a { color: var(--main-blue); text-decoration: none; font-weight: 600; }
     </style>
 </head>
 <body>

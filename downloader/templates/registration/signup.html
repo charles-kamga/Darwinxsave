@@ -6,63 +6,70 @@
     <title>DarwinxSaver - Inscription</title>
     <style>
         :root {
-            --apple-blue: #0066cc;
-            --apple-bg: #f5f5f7;
-            --error-red: #ff3b30;
+            --main-blue: #2563eb;
+            --main-violet: #8b5cf6;
+            --error-red: #ef4444;
+            --bg-dark: #0f172a;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --border-radius: 24px;
         }
 
         body { 
-            font-family: -apple-system, sans-serif; 
-            background: var(--apple-bg); 
+            font-family: 'SF Pro Display', -apple-system, sans-serif; 
+            background: var(--bg-dark); color: #fff;
             display: flex; align-items: center; justify-content: center; 
-            min-height: 100vh; margin: 0; padding: 20px;
+            min-height: 100vh; margin: 0; padding: 40px 20px;
+            background-image: radial-gradient(circle at center, rgba(139, 92, 246, 0.1), transparent 60%);
         }
 
         .card { 
-            background: white; padding: 40px; border-radius: 20px; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05); 
-            width: 100%; max-width: 400px; text-align: center; 
-            box-sizing: border-box;
+            background: var(--glass-bg); padding: 40px; border-radius: var(--border-radius); 
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); 
+            border: 1px solid rgba(255,255,255,0.05); backdrop-filter: blur(20px);
+            width: 100%; max-width: 420px; text-align: center; box-sizing: border-box;
         }
 
-        h2 { font-size: 28px; margin-bottom: 20px; letter-spacing: -1px; }
+        h2 { font-size: 28px; margin-bottom: 10px; font-weight: 800; letter-spacing: -1px; }
 
+        .subtitle { color: #94a3b8; font-size: 15px; margin-bottom: 30px; }
+        
         .form-group { text-align: left; margin-bottom: 20px; }
         
-        label { font-size: 14px; font-weight: 600; color: #1d1d1f; display: block; margin-bottom: 8px; }
+        label { font-size: 14px; font-weight: 600; color: #cbd5e1; display: block; margin-bottom: 8px; }
         
         input { 
-            width: 100%; padding: 12px; border: 1.5px solid #ddd; 
-            border-radius: 10px; box-sizing: border-box; font-size: 16px; 
-            outline: none; transition: border-color 0.2s;
+            width: 100%; padding: 14px; border: 1px solid rgba(255,255,255,0.1); 
+            border-radius: 12px; box-sizing: border-box; font-size: 15px; 
+            background: rgba(0,0,0,0.2); color: #fff; outline: none; transition: all 0.3s;
         }
 
-        input:focus { border-color: var(--apple-blue); }
+        input:focus { border-color: var(--main-blue); box-shadow: 0 0 15px rgba(37, 99, 235, 0.2); }
 
-        .help-text { font-size: 11px; color: #86868b; margin-top: 5px; line-height: 1.4; }
+        .help-text { font-size: 12px; color: #94a3b8; margin-top: 6px; line-height: 1.4; }
         
         .error-list { 
-            color: var(--error-red); font-size: 12px; list-style: none; 
-            padding: 0; margin: 5px 0 0 0; font-weight: 500;
+            color: var(--error-red); font-size: 13px; list-style: none; 
+            padding: 0; margin: 6px 0 0 0; font-weight: 500;
         }
 
         .btn { 
-            width: 100%; background: var(--apple-blue); color: white; 
-            padding: 14px; border: none; border-radius: 20px; 
-            font-weight: 600; font-size: 16px; margin-top: 10px; 
-            cursor: pointer; transition: opacity 0.2s;
+            width: 100%; background: linear-gradient(to right, var(--main-blue), var(--main-violet)); 
+            color: white; padding: 15px; border: none; border-radius: 15px; 
+            font-weight: 700; font-size: 16px; margin-top: 15px; 
+            cursor: pointer; transition: all 0.3s;
+            box-shadow: 0 10px 20px rgba(37, 99, 235, 0.2);
         }
         
-        .btn:hover { opacity: 0.9; }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 15px 30px rgba(139, 92, 246, 0.4); }
 
-        .footer-links { font-size: 13px; color: #86868b; margin-top: 30px; }
-        .footer-links a { color: var(--apple-blue); text-decoration: none; font-weight: 600; }
+        .footer-links { font-size: 14px; color: #94a3b8; margin-top: 30px; }
+        .footer-links a { color: var(--main-blue); text-decoration: none; font-weight: 600; }
     </style>
 </head>
 <body>
     <div class="card">
         <h2>Créer un compte</h2>
-        <p style="color: #86868b; font-size: 14px; margin-bottom: 30px;">Rejoignez DarwinxSaver pour des téléchargements illimités.</p>
+        <p class="subtitle">Rejoignez DarwinxSaver pour des téléchargements illimités.</p>
         
         <form method="POST">
             {% csrf_token %}
