@@ -75,6 +75,7 @@ def download_video(request):
             'format': ydl_format,
             'quiet': True,
             'merge_output_format': 'mp4' if format_type == 'mp4' else None,
+            'cookiefile': 'cookies.txt',
         }
         
         try:
@@ -110,7 +111,7 @@ def download_video(request):
 def get_video_preview(request):
     url = request.GET.get('url')
     if not url: return JsonResponse({'error': 'URL manquante'}, status=400)
-    ydl_opts = {'quiet': True, 'noplaylist': True}
+    ydl_opts = {'quiet': True, 'noplaylist': True, 'cookiefile': 'cookies.txt'}
     try:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             info = ydl.extract_info(url, download=False)
