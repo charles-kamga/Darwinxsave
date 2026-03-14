@@ -37,6 +37,22 @@ def signup(request):
         form = UserCreationForm()
     return render(request, 'registration/signup.html', {'form': form})
 
+import os
+from django.conf import settings
+
+def get_ydl_opts(format_type, quality, encoding, ydl_format):
+    cookie_path = os.path.join(settings.BASE_DIR, 'cookies.txt')
+    opts = {
+        'format': ydl_format,
+        'quiet': True,
+        'merge_output_format': 'mp4' if format_type == 'mp4' else None,
+        'nocheckcertificate': True,
+        'user_agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
+    }
+    if os.path.exists(cookie_path):
+        opts['cookiefile'] = cookie_path
+    return opts
+
 def download_video(request):
     if request.method == 'POST':
         url = request.POST.get('url')
@@ -71,12 +87,7 @@ def download_video(request):
             else:
                 ydl_format = f"bestvideo{height_limit}+bestaudio/best"
 
-        ydl_opts = {
-            'format': ydl_format,
-            'quiet': True,
-            'merge_output_format': 'mp4' if format_type == 'mp4' else None,
-            'cookiefile': 'cookies.txt',
-        }
+        ydl_opts = get_ydl_opts(format_type, quality, encoding, ydl_format)
         
         try:
             with yt_dlp.YoutubeDL(ydl_opts) as ydl:
@@ -111,7 +122,8 @@ def download_video(request):
 def get_video_preview(request):
     url = request.GET.get('url')
     if not url: return JsonResponse({'error': 'URL manquante'}, status=400)
-    ydl_opts = {'quiet': True, 'noplaylist': True, 'cookiefile': 'cookies.txt'}
+    ydl_opts = get_ydl_opts('mp4', 'hd', 'classic', 'best')
+    ydl_opts.update({'noplaylist': True})
     try:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             info = ydl.extract_info(url, download=False)
